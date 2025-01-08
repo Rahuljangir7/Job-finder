@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
 import dbConnect from "./db/connect.js";
-let PORT = process.env.PORT || 3000;
 import userRouter from "./routes/userRouter.js";
 
 dotenv.config();
@@ -20,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", userRouter);
 
+let PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Listing Port on ${PORT}`);
 });

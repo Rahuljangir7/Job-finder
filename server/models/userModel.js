@@ -18,6 +18,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     enum: ["admin", "recruiter", "jobseeker"],
   },
+
   //   common fields end for all roles
   // now we have role based fields
 

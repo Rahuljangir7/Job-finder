@@ -5,6 +5,7 @@ import { createTheme, MantineProvider } from "@mantine/core";
 import LoginUser from "./pages/LoginUser";
 import store from "./app/store";
 import { Provider } from "react-redux";
+import Navbar from "./components/Navbar";
 
 function App() {
   const theme = createTheme({
@@ -14,6 +15,7 @@ function App() {
   return (
     <MantineProvider theme={theme}>
       <Provider store={store}>
+        <Navbar />
         <LoginUser />
       </Provider>
     </MantineProvider>
