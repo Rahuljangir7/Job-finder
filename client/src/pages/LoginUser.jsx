@@ -11,8 +11,15 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
+import { useForm } from "react-hook-form";
 
 const LoginUser = () => {
+  const { register, handleSubmit, watch } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <Container size={420} my={40}>
       <Title
@@ -36,11 +43,20 @@ const LoginUser = () => {
         </Anchor>
       </Text>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required />
+        <form onSubmit={handleSubmit(onSubmit)}></form>
+        <TextInput
+          label="Email"
+          type="email"
+          placeholder="you@mantine.dev"
+          {...register("email")}
+          required
+        />
 
         <PasswordInput
           label="Password"
+          type="password"
           placeholder="Your password"
+          {...register("password")}
           required
           mt="md"
         />
