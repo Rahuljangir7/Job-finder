@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const UserSchema = mongoose.Schema({
-  // common fields for all roles
+  //common field for all roles
   name: {
     type: String,
   },
@@ -16,12 +16,10 @@ const UserSchema = mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "recruiter", "jobseeker"],
+    enum: ['admin', 'recruiter', 'jobseeker'],
   },
-
-  //   common fields end for all roles
-  // now we have role based fields
-
+  //common fields end for all roles
+  //now we have role based fields
   jobseeker: {
     education: [
       {
@@ -36,7 +34,7 @@ const UserSchema = mongoose.Schema({
         },
       },
     ],
-    experience: [
+    experiance: [
       {
         companyName: {
           type: String,
@@ -56,7 +54,6 @@ const UserSchema = mongoose.Schema({
       type: String,
     },
   },
-
   recruiter: {
     companyName: {
       type: String,
@@ -67,61 +64,17 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-UserSchema.pre("save", async function (next) {
-  if (this.role === "recruiter") {
+UserSchema.pre('save', async function (next) {
+  if (this.role === 'recruiter') {
     this.jobseeker = undefined;
     next();
   }
-  if (this.role === "jobseeker") {
+  if (this.role === 'jobseeker') {
     this.recruiter = undefined;
     next();
   }
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 export default User;
-
-// jobseeker
-// {
-//   "name": "Rahul jangir",
-//   "email": "rahuljangir@gmail.com",
-//   "password": "password",
-//   "phoneNumber": 9950108143,
-//   "role": "jobseeker",
-//   "jobseeker": {
-//       "education": [
-//           {
-//               "degree": "12th",
-//               "institution": "govt. school",
-//               "year": "2023"
-//           }
-//       ],
-//       "experience": [
-//           {
-//               "companyName": "grras solution pvt. ltd.",
-//               "designation": "https://www.grrasssolution.com",
-//               "duration": "6 month"
-//           }
-//       ],
-//       "skills": [
-//           "html",
-//           "css",
-//           "javaScript"
-//       ],
-//       "resume": "myresume"
-//   }
-// }
-
-// recruiter
-// {
-//   "name": "Rahul jangir",
-//   "email": "rahuljangir@gmail.com",
-//   "phoneNumber": 9950108143,
-//   "password": "password",
-//   "role": "recruiter",
-//   "recruiter": {
-//       "companyName": "grras solution pvt ltd",
-//       "companyWebsite": "https://www.grrassolution.com"
-//   }
-// }

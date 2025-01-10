@@ -1,48 +1,27 @@
-import React, { useState } from "react";
-import { Button, useMantineColorScheme } from "@mantine/core";
-import { FaMoon, FaSun } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
-  const { setColorScheme } = useMantineColorScheme();
-  const [colorName, setColorName] = useState(true);
-
-  const themeChange = () => {
-    console.log(colorName);
-    if (colorName) {
-      setColorScheme("dark");
-      setColorName(!colorName);
-    } else {
-      setColorScheme("light");
-      setColorName(!colorName);
-    }
-  };
+function Navbar() {
   return (
     <div>
-      <header className="flex">
-        <h1>
-          Job <span>finder</span>
+      <header
+        className="bg-gray-alpha-2 sticky top-0 z-10 p-3 bg-opacity-50 backdrop-blur-sm 
+   m-3 rounded-lg flex justify-between items-center h-16"
+      >
+        <h1 className="text-white ml-2 text-xl font-bold">
+          Job<span className="text-red">finder</span>
         </h1>
-        <ul className="flex">
-          <li>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <li>
-            <Link to={"/login"}>Login</Link>
-          </li>
-          <li>
-            <Link to={"/register"}>Register</Link>
-          </li>
-        </ul>
-        <div>
-          <Button onClick={themeChange}>
-            {colorName ? <FaMoon /> : <FaSun />}
-          </Button>
+
+        <div className="text-white  items-center flex gap-5">
+          <Link className="text-md font-semibold">Jobs</Link>
+          <button className="btn hover:bg-red transition-all duration-200 ease-in-out">
+            Login
+          </button>
+          <button className="btn bg-red">Register</button>
         </div>
       </header>
     </div>
   );
-};
+}
 
 export default Navbar;
-

@@ -4,40 +4,37 @@ const register = async (req, res) => {
   try {
     const { name, email, phoneNumber, password, role, jobseeker, recruiter } =
       req.body;
+    console.log(req.file);
 
-    if (!name || !email || !phoneNumber || !password || !role) {
-      return res.status(400).json({ msg: `fill the all fields` });
+    const user = await User.findOne({ email });
+    if (user) {
     }
 
-    if (role !== "jobseeker" || role !== "recruiter") {
-      return res.status(400).json({ msg: `fill the correct role` });
-    } else {
-      if (role === "jobseeker") {
-        const { education, experience, skills, resume } = jobseeker;
-        if (!education || !experience || !skills || !resume) {
-          return res.status(400).json({ msg: `fill the jobseeker fields` });
-        }
-      }
-      if (role === "recruiter") {
-        const { companyName, companyWebsite } = recruiter;
-        if (!companyName || !companyWebsite) {
-          return res.status(400).json({ msg: `fill the recruiter fields` });
-        }
-      }
+    const userData = {
+      name,
+      email,
+      phoneNumber,
+      password,
+      role,
+    };
+
+    if (role === "jobseeker") {
+      userData.jobseeker = JSON.parse(jobseeker);
     }
 
-    const registeredUser = new User(req.body);
-
-    registeredUser.save();
-    console.log(registeredUser);
-    if (!registeredUser) {
-      return res.status(400).json(`Bad request`);
+    if (role === "recruiter") {
+      userData.recruiter = JSON.parse(recruiter);
     }
+    // if (!user) {
+    // }
+    const newUser = await User.create(userData);
 
-    res.status(201).json(`Registered Created Successfully`);
-  } catch (err) {
-    res.status(500).json({ msg: `Internal server error` });
-  }
+    console.log(req.body)
+
+    res.status(201).json({
+      message: "user registered successfull",
+    });
+  } catch (error) {}
 };
 
 export { register };
