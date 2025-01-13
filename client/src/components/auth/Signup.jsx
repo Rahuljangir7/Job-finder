@@ -1,56 +1,65 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import './Signup.css';
-import { SignupForm } from '../../redux/Slices/authSlice';
-import {useDispatch} from 'react-redux' ;
+import React from "react";
+import { useForm } from "react-hook-form";
+import "./Signup.css";
+import { SignupForm } from "../../redux/Slices/authSlice.js";
+import { useDispatch } from "react-redux";
 function Signup() {
   const { register, handleSubmit, watch } = useForm();
-const dispatch = useDispatch() ;
+  const dispatch = useDispatch();
   const onSubmit = (data) => {
-  const formData = new FormData() ;
-  formData.append("name",data.name) ;
-  formData.append("email",data.email) ;
-  formData.append("phoneNumber",data.phoneNumber) ;
-  formData.append('password',data.password) ;
-  formData.append("role",data.role) ;
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("password", data.password);
+    formData.append("role", data.role);
 
-  if(data.role === 'jobseeker'){
-    formData.append('jobseeker', JSON.stringify({
-      education : [
-        {
-          degree : data.degree,
-          institution : data.institution ,
-          year : data.year
-        }
-      ],
-      experiance : [
-        {
-          companyName : data.companyName ,
-          designation : data.designation,
-          duration : data.duration
+    if (data.role === "jobseeker") {
+      formData.append(
+        "jobseeker",
+        JSON.stringify({
+          education: [
+            {
+              degree: data.degree,
+              institution: data.institution,
+              year: data.year,
+            },
+          ],
+          experiance: [
+            {
+              companyName: data.companyName,
+              designation: data.designation,
+              duration: data.duration,
+            },
+          ],
+          skills: data.skills.split(","),
+          resume: data.resume[0], // Ensure data.resume[0] is a valid File
+        })
+      );
+    }
 
-        }
-      ],
-      skills : data.skills.split(','),
-      resume : data.resume[0]
-    }))
-  }
+    // console.log(data.resume[0]); // Log to debug
 
-  if(data.role === 'recruiter'){
-    form.append('recruiter', JSON.stringify({
-      companyName : data.companyName ,
-      companyWebsite : data.companyWebsite
-    }))
-  }
+    if (data.role === "recruiter") {
+      formData.append(
+        "recruiter",
+        JSON.stringify({
+          companyName: data.companyName,
+          companyWebsite: data.companyWebsite,
+        })
+      );
+    }
 
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]); // Debug each entry
+    }
 
-    dispatch(SignupForm(formData))
-
+    dispatch(SignupForm(formData));
   };
 
-  const selectedRole = watch('role');
-  console.log(selectedRole);
-  console.log({ ...register('phoneNumber') });
+  const selectedRole = watch("role");
+  // console.log(selectedRole);
+  // console.log({ ...register("phoneNumber") });
 
   return (
     <div>
@@ -75,7 +84,7 @@ const dispatch = useDispatch() ;
               </label>
               <input
                 type="text"
-                {...register('name')}
+                {...register("name")}
                 className="w-full tex-sm bg-input-field focus:border-red-500 outline-none rounded-full border border-gray-300  px-3 py-2"
                 placeholder="What is your name ?"
               />
@@ -87,7 +96,7 @@ const dispatch = useDispatch() ;
               </label>
               <input
                 type="email"
-                {...register('email')}
+                {...register("email")}
                 className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                 placeholder="Your Email"
               />
@@ -99,7 +108,7 @@ const dispatch = useDispatch() ;
               </label>
               <input
                 type="password"
-                {...register('password')}
+                {...register("password")}
                 className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                 placeholder="Your Password"
               />
@@ -111,7 +120,7 @@ const dispatch = useDispatch() ;
               </label>
               <input
                 type="text"
-                {...register('phoneNumber')}
+                {...register("phoneNumber")}
                 className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                 placeholder="Your Phone Number"
               />
@@ -126,7 +135,7 @@ const dispatch = useDispatch() ;
               <label className="flex items-center">
                 <input
                   type="radio"
-                  {...register('role')}
+                  {...register("role")}
                   value="jobseeker"
                   className="mr-2"
                 />
@@ -135,7 +144,7 @@ const dispatch = useDispatch() ;
               <label className="flex items-center">
                 <input
                   type="radio"
-                  {...register('role')}
+                  {...register("role")}
                   value="recruiter"
                   className="mr-2"
                 />
@@ -145,7 +154,7 @@ const dispatch = useDispatch() ;
           </div>
 
           <div className="text-sm">
-            {selectedRole === 'jobseeker' && (
+            {selectedRole === "jobseeker" && (
               <div>
                 <h3 className="text-lg font-semibold mb-4">
                   Job Seeker Details
@@ -155,7 +164,7 @@ const dispatch = useDispatch() ;
                     <label className="block text-gray-700 mb-2">Degree</label>
                     <input
                       type="text"
-                      {...register('degree')}
+                      {...register("degree")}
                       className="w-full bg-input-field border border-gray-300 rounded-full px-3 py-2"
                       placeholder="Your Degree"
                     />
@@ -167,7 +176,7 @@ const dispatch = useDispatch() ;
                     </label>
                     <input
                       type="text"
-                      {...register('institution')}
+                      {...register("institution")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Your Institution"
                     />
@@ -177,7 +186,7 @@ const dispatch = useDispatch() ;
                     <label className="block text-gray-700 mb-2">Year</label>
                     <input
                       type="number"
-                      {...register('year')}
+                      {...register("year")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Year of Graduation"
                     />
@@ -187,7 +196,7 @@ const dispatch = useDispatch() ;
                     <label className="block text-gray-700 mb-2">Company</label>
                     <input
                       type="text"
-                      {...register('company')}
+                      {...register("company")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Your Company"
                     />
@@ -199,17 +208,19 @@ const dispatch = useDispatch() ;
                     </label>
                     <input
                       type="number"
-                      {...register('duration')}
+                      {...register("duration")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Duration"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 mb-2">Designation</label>
+                    <label className="block text-gray-700 mb-2">
+                      Designation
+                    </label>
                     <input
                       type="text"
-                      {...register('designation')}
+                      {...register("designation")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Job Role"
                     />
@@ -219,7 +230,7 @@ const dispatch = useDispatch() ;
                     <label className="block text-gray-700 mb-2">Skills</label>
                     <input
                       type="text"
-                      {...register('skills')}
+                      {...register("skills")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="E.g., JavaScript, React"
                     />
@@ -231,7 +242,7 @@ const dispatch = useDispatch() ;
                     </label>
                     <input
                       type="file"
-                      {...register('resume')}
+                      {...register("resume")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Resume Link"
                     />
@@ -240,7 +251,7 @@ const dispatch = useDispatch() ;
               </div>
             )}
 
-            {selectedRole === 'recruiter' && (
+            {selectedRole === "recruiter" && (
               <div>
                 <h3 className="text-lg font-semibold mb-4">
                   Recruiter Details
@@ -252,7 +263,7 @@ const dispatch = useDispatch() ;
                     </label>
                     <input
                       type="text"
-                      {...register('companyName')}
+                      {...register("companyName")}
                       className="w-full bg-input-field border border-gray-300 rounded-full px-3 py-2"
                       placeholder="Company Name"
                     />
@@ -264,7 +275,7 @@ const dispatch = useDispatch() ;
                     </label>
                     <input
                       type="text"
-                      {...register('companyWebsite')}
+                      {...register("companyWebsite")}
                       className="w-full border bg-input-field border-gray-300 rounded-full px-3 py-2"
                       placeholder="Company Website"
                     />
@@ -275,8 +286,8 @@ const dispatch = useDispatch() ;
           </div>
 
           <p className="text-[11px] font-normal">
-            By clicking Register, you agree to the{' '}
-            <span className="text-red">Terms and Conditions</span> &{' '}
+            By clicking Register, you agree to the{" "}
+            <span className="text-red">Terms and Conditions</span> &{" "}
             <span className="text-red">Privacy Policy</span> of JobFinder.com
           </p>
           <button
